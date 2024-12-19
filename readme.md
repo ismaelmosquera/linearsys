@@ -15,7 +15,13 @@ The tecniques implemented to solve linear systems are:
 > - Gaussian elimination.  
 > - LU decomposition.  
 >  
+  
+This code library also has functionallity to perform QR factorization for square matrices.  
+
 where we use numerical analisys skills in the developed algorithms.  
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
+  
+All the headers in the include folder are fully documented about what each funcion does.  
+
 
