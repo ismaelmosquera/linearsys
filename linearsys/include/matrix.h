@@ -250,7 +250,7 @@ Matrix* transpose_matrix(const Matrix* m);
 /*
 * Gets the trace of a square matrix.
 * The matrix passed as parameter must be square.
-* The trace of a matrix is the product of its diagonal entries.
+* The trace of a matrix is the sum of its diagonal entries.
 * param: const Matrix* m A matrix to trace.
 *
 * returns: the trace of the matrix passed as parameter.
