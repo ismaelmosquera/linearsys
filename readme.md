@@ -19,9 +19,13 @@ The tecniques implemented to solve linear systems are:
   
 where we use numerical analisys skills in the developed algorithms.  
 QR factorization is implemented just for square matrices.  
+  
+Computing eigenvalues and eigenvectors:  
+An Eigen is a pair eigenvalue/eigenvector.  
+find the maximum Eigen usign the Power Method.  
+Find the eigensystem for a square matrix using the QR Algorithm.  
+  
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
   
 All the headers in the include folder are fully documented about what each funcion does.  
-
-
