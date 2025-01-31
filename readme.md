@@ -25,6 +25,16 @@ An Eigen is a pair eigenvalue/eigenvector.
 find the maximum Eigen usign the Power Method.  
 Find the eigensystem for a square matrix using the QR Algorithm.  
   
+Perform SVD factorization.  
+The result of a SVD factorization is as follows:  
+M= UDV^t  
+were  
+>  
+> - U is an orthogonal matrix having the left singular vectors of M.  
+> - Sigma is a diagonal matrix having the singular values of M.  
+> - V is an orthogonal matrix having the right singular vectors of M.  
+>  
+  
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
   
