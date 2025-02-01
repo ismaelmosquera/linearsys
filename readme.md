@@ -28,7 +28,7 @@ Find the eigensystem for a square matrix using the QR Algorithm.
 Perform SVD factorization.  
 The result of a SVD factorization is as follows:  
 M= UDV^t  
-were  
+where  
 >  
 > - U is an orthogonal matrix having the left singular vectors of M.  
 > - Sigma is a diagonal matrix having the singular values of M.  
