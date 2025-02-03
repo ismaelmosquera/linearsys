@@ -1,0 +1,194 @@
+/*
+ * Copyright (c) 2025 Ismael Mosquera Rivera
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include "eigen.h"
+#include "svd.h"
+
+#define LEFT_SIDE 0 /* left side */
+#define RIGHT_SIDE 1 /* right side */
+#define POSITIVE 1 /* positive sign */
+#define NEGATIVE 0 /* negative sign */
+
+/*
+* Helper functions.
+*/
+
+/*get number sign */
+static int x_sign(double x)
+{
+return (x < 0.0) ? NEGATIVE : POSITIVE;
+}
+
+/* get sign */
+static int get_sign(const Matrix* m)
+{
+	int i, j, ret, s;
+if(rows_matrix(m) != columns_matrix(m))
+{
+	ret = x_sign(get_matrix(m, 0, 0));
+	s = ret;
+	for(i = 0; i < rows_matrix(m); i++)
+	{
+	for(j = 0; j < columns_matrix(m); j++)
+	{
+		if(x_sign(get_matrix(m, i, j)) !=ret)
+		{
+			s = x_sign(get_matrix(m, i, j));
+			break;
+		}
+	}
+	}
+	if(ret != s) return NEGATIVE;
+	return (ret == POSITIVE) ? NEGATIVE : POSITIVE;
+}
+ret = x_sign(get_matrix(m, 0, 0));
+if(ret == POSITIVE) return ret;
+s = ret;
+for(i = 0; i < rows_matrix(m); i++)
+{
+if(x_sign(get_matrix(m, i, i)) != NEGATIVE)
+{
+	s = POSITIVE;
+	break;
+}
+}
+if(ret != s ) return POSITIVE;
+return NEGATIVE;
+}
+
+/* get min ( LEFT or RIGHT ). */
+static int get_min(int m, int n)
+{
+return (m <= n) ? LEFT_SIDE : RIGHT_SIDE;
+}
+
+/* set column matrix. */
+static Matrix* set_column_matrix(const Matrix* m, const Vector* v, int j)
+{
+	int i;
+	int n = rows_matrix(m);
+	Matrix* out = clone_matrix(m);
+	for(i = 0; i < n; i++)
+	{
+		set_matrix(out, get_vector(v, i), i,j);
+	}
+	return out;
+}
+
+/* end helper functions */
+
+/* implementation */
+
+void destroy_svd(SVD* svd)
+{
+if(svd == NULL) return;
+if(svd_u(svd) != NULL) destroy_matrix(svd_u(svd));
+if(svd_sigma(svd) != NULL) destroy_matrix(svd_sigma(svd));
+if(svd_v(svd) != NULL) destroy_matrix(svd_v(svd));
+free(svd);
+svd = NULL;
+}
+
+void print_svd(const SVD* svd)
+{
+if(svd == NULL)
+{
+printf("[]");
+return;
+}
+printf("U:\n");
+print_matrix(svd_u(svd));
+printf("\n");
+printf("Sigma:\n");
+print_matrix(svd_sigma(svd));
+printf("\n");
+printf("V:\n");
+print_matrix(svd_v(svd));
+printf("\n");
+}
+
+SVD* svd_factorization(const Matrix* m)
+{
+	double sign;
+int i, n, min;
+SVD* svd = NULL;
+EigenSystem* left = NULL;
+EigenSystem* right = NULL;
+Matrix* u = NULL;
+Matrix* sigma = NULL;
+Matrix* v = NULL;
+if(m == NULL) return NULL;
+sign = (get_sign(m) == NEGATIVE) ? -1.0 : 1.0;
+u = create_matrix(rows_matrix(m), rows_matrix(m));
+sigma = create_matrix(rows_matrix(m), columns_matrix(m));
+v = create_matrix(columns_matrix(m), columns_matrix(m));
+/* compute left and right eigen */
+left = eigen_system(mul_matrix(m, transpose_matrix(m)));
+right = eigen_system(mul_matrix(transpose_matrix(m), m));
+
+/* compute UDV */
+n = size_eigensystem(left);
+for(i = 0; i < n; i++)
+{
+u = set_column_matrix(u, normalize_vector(eigen_vector(left->_eigen[i])), i);
+}
+n = size_eigensystem(right);
+for(i = 0; i < n; i++)
+{
+v = set_column_matrix(v, normalize_vector(eigen_vector(right->_eigen[i])), i);
+}
+min = get_min(rows_matrix(m), columns_matrix(m));
+if(min == LEFT_SIDE)
+{
+	n = size_eigensystem(left);
+	for(i = 0; i < n; i++)
+	{
+set_matrix(sigma, sign*sqrt(eigen_value(left->_eigen[i])), i, i);
+}
+}
+else
+{
+	n = size_eigensystem(right);
+		for(i = 0; i < n; i++)
+		{
+	set_matrix(sigma, sign*sqrt(eigen_value(right->_eigen[i])), i, i);
+	}
+}
+/* build SVD */
+svd = (SVD*)malloc(sizeof(SVD));
+svd_u(svd) = clone_matrix(u);
+svd_sigma(svd) = clone_matrix(sigma);
+svd_v(svd) = clone_matrix(v);
+
+/* release previously allocated memory */
+destroy_eigensystem(left);
+destroy_eigensystem(right);
+destroy_matrix(u);
+destroy_matrix(sigma);
+destroy_matrix(v);
+
+return svd;
+}
+
+/* END */
+
