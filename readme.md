@@ -4,7 +4,7 @@
 ### *Matrix and Vector*  
 
 
-This small Project is an implementation suitable to efficiently solve NxN systems of linear equations;  
+This Project is an implementation suitable to efficiently solve NxN systems of linear equations;  
 four different skills are presented to do that. We first declare a Matrix and a Vector type,  
 and we use them in the algorithms to solve linear systems.  
 In addition, we declare and implement functions to perform the most common operations applied to Matrix and Vector, and support  
@@ -34,6 +34,9 @@ where
 > - Sigma is a diagonal matrix having the singular values of M.  
 > - V is an orthogonal matrix having the right singular vectors of M.  
 >  
+  
+Compute the pseudoinverse of a MxN matrix usig SVD.  
+Get the nearest orthogonal matrix to a matrix M using SVD.  
   
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
