@@ -25,7 +25,7 @@ An Eigen is a pair eigenvalue/eigenvector.
 find the maximum Eigen usign the Power Method.  
 Find the eigensystem for a square matrix using the QR Algorithm.  
   
-Perform SVD factorization.  
+Perform SVD factorization for a MxN matrix.  
 The result of a SVD factorization is as follows:  
 M= UDV^t  
 where  
@@ -35,8 +35,8 @@ where
 > - V is an orthogonal matrix having the right singular vectors of M.  
 >  
   
-Compute the pseudoinverse of a MxN matrix usig SVD.  
-Get the nearest orthogonal matrix to a matrix M using SVD.  
+Compute the pseudoinverse of a MxN matrix using SVD.  
+Get the nearest orthogonal matrix to a NxN matrix using SVD.  
   
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
