@@ -257,6 +257,30 @@ printf("where m and n are rows(M) and columns(M) respectively, so\n");
 printf("M * pM^-1= I:\n");
 print_matrix(mul_matrix(m, pM));
 printf("\n");
+printf("Minors:\n");
+printf("Here, we present a few functionallity with minors.\n");
+m = load_matrix("mcoef.dat");
+printf("A:\n");
+print_matrix(m);
+printf("\n");
+printf("Print all principal minor submatrices:\n");
+for(int i = 0; i < rows_matrix(m); i++)
+{
+print_matrix(first_minor_matrix(m, i));
+printf("\n");
+}
+printf("Compute inverse matrix using Cramer's method:\n");
+printf("such a method uses cofactor matrix builded using minors.\n");
+printf("A:\n");
+print_matrix(m);
+printf("\n");
+pM = invert_matrix(m);
+printf("Inverse of A:\n");
+print_matrix(pM);
+printf("\n");
+printf("A * A^-1 = I\n");
+print_matrix(mul_matrix(m, pM));
+printf("\n");
 
 destroy_eigen(maxeigen);
 destroy_eigensystem(eigsys);

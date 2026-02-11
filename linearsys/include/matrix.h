@@ -27,6 +27,8 @@ extern "C" {
 
 #include "vector.h"
 
+#define NaN -1E-12 /* Declare a Not a Number symbolic constant */
+
 /*
 * Matrix type.
 */
@@ -400,6 +402,83 @@ Matrix* nearest_orthogonal_matrix(const Matrix* m);
 * returns: the forvinius norm of the matrix passed as parameter, or -1.0 if the parameter is NULL.
 */
 double forbinius_norm_matrix(const Matrix* m);
+
+/*
+* Computes the minor for the matrix passed as parameter.
+* This function gets, actually, the determinant of the kth-qth minor.
+* param: m
+* A square matrix.
+* param: k
+* kth row index.
+* param q
+* qth column index.
+* returns: Computed minor or NaN if the operation cannot be done.
+*
+*/
+double minor(const Matrix* m, int k, int q);
+
+/*
+* This function returns the minor matrix of the one passed as parameter.
+* That is, the submatrix after removing the kth-row and the qth-colum.
+* If k = q, then we call it first minor matrix.
+* param: m
+* A square matrix.
+* param: k
+* kth row index.
+* param: q
+* qth column index.
+* returns: minor matrix or NULL if the operation cannot be done.
+*
+*/
+Matrix* minor_matrix(const Matrix* m, int k, int q);
+
+/*
+* Computes the first minor for the square matrix passed as parameter.
+* A first minor is, actually, the determinant of its first minor associated matrix.
+* In this case, we remove the kth row and the kth column to form the associated minor matrix.
+* param: m
+* A square matrix.
+* param: k
+* kth row-column index.
+* returns: minor or NaN if the operation cannot be done.
+*
+*/
+double first_minor(const Matrix* m, int k);
+
+/*
+* Computes the first minor matrix for the one passed as parameter.
+* A first minor matrix is a submatrix where k equals q.
+* That is, we remove the row and column for the same index.
+* param: m
+* A square matrix.
+* param: k
+* kth row-column index.
+* returns: minor matrix or NULL if the operation cannot be done.
+*
+*/
+Matrix* first_minor_matrix(const Matrix* m, int k);
+
+/*
+* Computes the cofactor matrix for the one passed as parameter.
+* Each entry in such a matrix is -1^(i+j)M(i, j).
+* where i is the kth row and j is the qth column and M(i, j) is the kth-qth associated minor.
+* param: m
+* A square matrix.
+* returns: cofactor matrix or NULL if the operation cannot be done.
+*
+*/
+Matrix* cofactor_matrix(const Matrix* m);
+
+/*
+* Computes the inverse of the matrix passed as parameter using minors through the cofactor matrix.
+* This is another way to compute the inverse of a matrix; the one presented above uses LU decomposition.
+* Remember that for an orthogonal matrix, the transpose is its inverse.
+* param: m
+* A square matrix.
+* returns: inverse matrix or NULL if the operation cannot be done.
+*
+*/
+Matrix* invert_matrix(const Matrix* m);
 
 
 /*

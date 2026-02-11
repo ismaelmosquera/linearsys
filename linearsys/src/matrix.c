@@ -28,10 +28,6 @@
 
 #define THRESHOLD 1E-6
 
-/* Declare a Not a Number constant */
-static const double __NaN__ = 1E-9;
-
-
 /* Helper functions */
 
 /*
@@ -208,7 +204,7 @@ for(i = 0; i < m->_rows; i++)
 
 double get_matrix(const Matrix* m, int i, int j)
 {
-if(i<0 || i>m->_rows-1 || j<0 || j>m->_columns-1) return __NaN__;
+if(i<0 || i>m->_rows-1 || j<0 || j>m->_columns-1) return NaN;
 return *(m->_data + i*m->_columns + j);
 }
 
@@ -637,5 +633,93 @@ for(j = 0; j < columns_matrix(m); j++)
 }
 return sqrt(sum);
 }
+
+double minor(const Matrix* m, int k, int q)
+{
+Matrix* _m = minor_matrix(m, k, q);
+if(_m == NULL) return NaN;
+double d = det_matrix(_m);
+destroy_matrix(_m);
+return d;
+}
+
+Matrix* minor_matrix(const Matrix* m, int k, int q)
+{
+if(m == NULL) return NULL;
+int r = rows_matrix(m);
+int c = columns_matrix(m);
+if(r != c) return NULL; /* m must be square */
+if(k < 0 || k > r-1) return NULL; /* k is out of range */
+if(q < 0 || q > r-1) return NULL; /* q is out of range */
+int order = r;
+if(order < 2) return NULL; /* order must be >= 2 */
+Matrix* minor = create_matrix(order-1, order-1); /* create minor matrix */
+int ai, aj, j;
+int n = order;
+for(int t=0;t<n;t++)
+{
+ai=0;
+for(int i=0;i<n;i++)
+{
+aj=0;
+for(j=0;j<n;j++)
+if(i != k && j!= q)
+{
+set_matrix(minor, get_matrix(m, i, j), ai,aj);
+aj++;
+}
+if(i != k && j != q) ai++;
+}
+}
+return minor;
+}
+
+double first_minor(const Matrix* m, int k)
+{
+Matrix* _m = first_minor_matrix(m, k);
+if(_m == NULL) return NaN;
+double d = det_matrix(_m);
+destroy_matrix(_m);
+return d;
+}
+
+Matrix* first_minor_matrix(const Matrix* m, int k)
+{
+return minor_matrix(m, k, k);
+}
+
+Matrix* cofactor_matrix(const Matrix* m)
+{
+if(m == NULL) return NULL;
+int r = rows_matrix(m);
+int c = columns_matrix(m);
+if(r != c) return NULL; /* m must be square */
+int n = r; /* order of the output matrix */
+Matrix* out = create_matrix(n, n);
+double sign;
+for(int i = 0; i < n; i++)
+{
+for(int j = 0; j < n; j++)
+{
+	sign = (((i+j)%2) == 0) ? 1.0 : -1.0;
+	set_matrix(out, sign*minor(m, i, j), i, j);
+}
+}
+return out;
+}
+
+Matrix* invert_matrix(const Matrix* m)
+{
+if(m == NULL) return NULL;
+int n = columns_matrix(m);
+if(n != rows_matrix(m)) return NULL; /* m must be square */
+Matrix* _m = cofactor_matrix(m);
+if(_m == NULL) return NULL;
+double d = det_matrix(m);
+if(abs(d) < THRESHOLD) return NULL; /* d is too close to zero */
+double t = 1.0/d;
+return scale_matrix(transpose_matrix(_m), t);
+}
+
 
 /* END */
