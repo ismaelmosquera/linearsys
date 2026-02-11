@@ -281,6 +281,12 @@ printf("\n");
 printf("A * A^-1 = I\n");
 print_matrix(mul_matrix(m, pM));
 printf("\n");
+printf("Compute the determinant using cofactors:\n");
+printf("A:\n");
+print_matrix(m);
+printf("\n");
+printf("det(A) = %.2lf\n", determinant(m));
+printf("\n");
 
 destroy_eigen(maxeigen);
 destroy_eigensystem(eigsys);

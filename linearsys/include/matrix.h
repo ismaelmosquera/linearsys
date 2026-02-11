@@ -480,6 +480,17 @@ Matrix* cofactor_matrix(const Matrix* m);
 */
 Matrix* invert_matrix(const Matrix* m);
 
+/*
+* This function computes the determinant of the matrix passed as parameter using cofactors.
+* since there is already a method named 'det_matrix' to get the same task in another way,
+* we decided call this one 'determinant'.
+* param m
+* A square matrix.
+* returns: determinant of the matrix passed as parameter or NaN if the operation cannot be done.
+*
+*/
+double determinant(const Matrix* m);
+
 
 /*
 * Macros to get the number of rows and columns from a Matrix.

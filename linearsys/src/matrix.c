@@ -721,5 +721,19 @@ double t = 1.0/d;
 return scale_matrix(transpose_matrix(_m), t);
 }
 
+double determinant(const Matrix* m)
+{
+if(m == NULL) return NaN;
+Matrix* _m = cofactor_matrix(m);
+if(_m == NULL) return NaN;
+double d = 0.0;
+int n = rows_matrix(m); // order of m
+for(int i = 0; i < n; i++)
+{
+	d += get_matrix(m, i, 0) * get_matrix(_m, i, 0);
+}
+return d;
+}
+
 
 /* END */
