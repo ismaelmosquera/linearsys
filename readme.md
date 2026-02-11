@@ -38,7 +38,15 @@ where
 Compute the pseudoinverse of a MxN matrix using SVD.  
 Get the nearest orthogonal matrix to a NxN matrix using SVD.  
   
+New useful features were added recently, mainly related to matrix operations.  
+This piece of software is devoted to my loved wife Daniela who assumes, without disturb,  
+all the time I spend doing things like this :)  
+  
 The code can be compiled under any platform having a C compiler, since we use only standard headers  
 which come with all C compilers, and the rest is pure C code.  
   
 All the headers in the include folder are fully documented about what each funcion does.  
+Hope that this work be of interest.  
+  
+Last revision: 11/02/2026 ( day/month/year )  
+  
