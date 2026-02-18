@@ -48,5 +48,5 @@ which come with all C compilers, and the rest is pure C code.
 All the headers in the include folder are fully documented about what each funcion does.  
 Hope that this work be of interest.  
   
-Last revision: 11/02/2026 ( day/month/year )  
+Last revision: 18/02/2026 ( day/month/year )  
   
