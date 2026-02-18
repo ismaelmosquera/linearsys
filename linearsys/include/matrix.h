@@ -491,6 +491,35 @@ Matrix* invert_matrix(const Matrix* m);
 */
 double determinant(const Matrix* m);
 
+/*
+* Evaluates for symmetry.
+* param: m
+* A square matrix.
+* returns: 1 if the matrix passed as parameter is symmetrical or 0 otherwise.
+*
+*/
+int is_symmetrical(const Matrix* m);
+
+/*
+* Computes the rank of the matrix passed as parameter.
+* param: m
+* A matrix type instance.
+*
+* returns: rank of the matrix passed as parameter or -1 if the operation cannot be done.
+*
+*/
+int rank_matrix(const Matrix* m);
+
+/*
+* Evaluates for fully rank matrix.
+* param m
+* A matrix type instance.
+*
+* returns: 1 if fully rank or 0 otherwise
+*
+*/
+int fully_rank_matrix(const Matrix* m);
+
 
 /*
 * Macros to get the number of rows and columns from a Matrix.

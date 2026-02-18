@@ -30,6 +30,19 @@
 
 /* Helper functions */
 
+static int __min_(int a, int b)
+{
+return (a <= b) ? a : b;
+}
+
+/*
+* Helper function to compute the absolute value.
+*/
+static double __abs_(double x)
+{
+return (x < 0) ? -x : x;
+}
+
 /*
 * Static function to compute the determinant of a square Matrix.
 */
@@ -724,15 +737,94 @@ return scale_matrix(transpose_matrix(_m), t);
 double determinant(const Matrix* m)
 {
 if(m == NULL) return NaN;
-Matrix* _m = cofactor_matrix(m);
-if(_m == NULL) return NaN;
+if(rows_matrix(m) != columns_matrix(m)) return NaN; /* m must be square */
+double sign = 1.0;
 double d = 0.0;
 int n = rows_matrix(m); // order of m
-for(int i = 0; i < n; i++)
+for(int j = 0; j < n; j++)
 {
-	d += get_matrix(m, i, 0) * get_matrix(_m, i, 0);
+	d += sign * minor(m, 0, j) * get_matrix(m, 0, j);
+	sign *= -1.0;
 }
 return d;
+}
+
+int is_symmetrical(const Matrix* m)
+{
+	if(m == NULL) return 0;
+int n = rows_matrix(m);
+if(n != columns_matrix(m)) return 0; /* m must be square */
+int retval = 1;
+for(int i = 0; i < n; i++)
+{
+	for(int j = i+1; j < n; j++)
+	{
+		if(get_matrix(m, i, j) != get_matrix(m, j, i))
+		{
+		retval = 0;
+		break;
+	}
+	}
+}
+return retval;
+}
+
+int rank_matrix(const Matrix* m)
+{
+	Matrix* u = NULL;
+	int _rank = 0;
+int row, i, j, k;
+double pivot, elim, tmp;
+if(m == NULL) return -1;
+u = (columns_matrix(m) < rows_matrix(m)) ? transpose_matrix(m) : clone_matrix(m);
+i = 0;
+ while(i < u->_rows)
+ {
+	 /* find pivot */
+  pivot = __abs_(*(u->_data + i*u->_columns + i));
+  row = i;
+  for(k = i+1; k < u->_rows; k++)
+   {
+   if(__abs_(*(u->_data + k*m->_columns)) > pivot)
+   {
+    pivot = __abs_(*(u->_data + k*m->_columns));
+    row = k;
+   }
+}
+   if(i != row) /* swap rows if necessary */
+  {
+    for(j = 0; j < u->_columns; j++)
+    {
+     tmp = *(u->_data + i*u->_columns + j);
+     *(u->_data + i*u->_columns + j) = *(u->_data + row*u->_columns + j);
+     *(u->_data + row*u->_columns + j) = tmp;
+}
+}
+  for(j = i+1; j < u->_rows; j++)
+  {
+	  /* find zeros */
+   elim = -(*(u->_data + j*u->_columns + i)) / *(u->_data + i*u->_columns + i);
+   for(k = 0; k < u->_columns; k++)
+   {
+    *(u->_data + j*u->_columns + k) += elim * *(u->_data + i*u->_columns + k);
+}
+   }
+ i++;
+}
+/* compute rank ( number of pivots different than zero ) */
+for(i = 0; i < rows_matrix(u); i++)
+{
+	if(__abs_(get_matrix(u, i, i)) > THRESHOLD) _rank++;
+}
+/* release previously allocated memory */
+destroy_matrix(u);
+return _rank;
+}
+
+int fully_rank_matrix(const Matrix* m)
+{
+int _rank = rank_matrix(m);
+return (_rank == __min_(rows_matrix(m), columns_matrix(m))) ? 1 : 0;
 }
 
 
