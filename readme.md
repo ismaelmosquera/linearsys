@@ -38,6 +38,18 @@ where
 Compute the pseudoinverse of a MxN matrix using SVD.  
 Get the nearest orthogonal matrix to a NxN matrix using SVD.  
   
+Perform square matrix diagonalization.  
+To diagonalize a square matrix, we can first find an orthogonal matrix P and a diagonal matrix D so that:  
+>  
+> - P^-1AP = D  
+>  
+thus:  
+>  
+> - A = PDP^-1  
+>  
+Take in account that maybe could not be possible to find such a P and D matrices.  
+In that case, we say that the matrix A is defective.  
+  
 New useful features were added recently, mainly related to matrix operations.  
 This piece of software is devoted to my loved wife Daniela who assumes, without disturb,  
 all the time I spend doing things like this :)  
@@ -48,5 +60,5 @@ which come with all C compilers, and the rest is pure C code.
 All the headers in the include folder are fully documented about what each funcion does.  
 Hope that this work be of interest.  
   
-Last revision: 18/02/2026 ( day/month/year )  
+Last revision: 02/03/2026 ( day/month/year )  
   
