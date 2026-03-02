@@ -144,6 +144,11 @@ EigenSystem* eigen_system(const Matrix* m);
 */
 #define size_eigensystem(eigsys) ((eigsys)->_size)
 
+/*
+ Macro to access eigen array of an eigen system.
+ */
+ #define eigen_eigensystem(eigsys) ((eigsys)->_eigen)
+
 #ifdef __cplusplus
 }
 #endif

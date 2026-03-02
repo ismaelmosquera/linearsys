@@ -231,4 +231,5 @@ result->_data[2] = v1->_data[0]*v2->_data[1] - v1->_data[1]*v2->_data[0];
 return result;
 }
 
+
 /* END */

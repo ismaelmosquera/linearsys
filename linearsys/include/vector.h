@@ -25,6 +25,7 @@
 extern "C" {
 	#endif
 
+
 /*
 * Vector type definition.
 */
@@ -207,6 +208,7 @@ double dot_product_vector(const Vector* v1, const Vector* v2);
 * size v1 = size v2 = 3
 */
 Vector* cross_product_vector(const Vector* v1, const Vector* v2);
+
 
 /*
 * Macro to get the number of elements ( size ) of a vector.

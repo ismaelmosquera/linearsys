@@ -749,7 +749,7 @@ for(int j = 0; j < n; j++)
 return d;
 }
 
-int is_symmetrical(const Matrix* m)
+int is_symmetric(const Matrix* m)
 {
 	if(m == NULL) return 0;
 int n = rows_matrix(m);
@@ -825,6 +825,57 @@ int fully_rank_matrix(const Matrix* m)
 {
 int _rank = rank_matrix(m);
 return (_rank == __min_(rows_matrix(m), columns_matrix(m))) ? 1 : 0;
+}
+
+Matrix* to_row_matrix(const Vector* v)
+{
+	int size, j;
+if(v == NULL) return NULL;
+size = size_vector(v);
+Matrix* m = create_matrix(1, size);
+for(j = 0; j < size; j++)
+{
+set_matrix(m, get_vector(v, j), 0, j);
+}
+return m;
+}
+
+Matrix* to_column_matrix(const Vector* v)
+{
+int size, i;
+if(v == NULL) return NULL;
+size = size_vector(v);
+Matrix* m = create_matrix(size, 1);
+for(i = 0; i < size; i++)
+{
+set_matrix(m, get_vector(v, i), i, 0);
+}
+return m;
+}
+
+Matrix* pow_matrix(const Matrix* m, int k)
+{
+	int i, q;
+	Matrix* _m = NULL;
+if(m == NULL) return NULL;
+if(rows_matrix(m) != columns_matrix(m)) return NULL; /* m must be square */
+if(k == 0) return identity_matrix(rows_matrix(m));
+_m = clone_matrix(m);
+q = abs(k);
+for(i = 1; i < q; i++)
+{
+	_m = mul_matrix(_m, m);
+}
+return (k < 0) ? inverse_matrix(_m) : _m;
+}
+
+Matrix* div_matrix(const Matrix* m1, const Matrix* m2)
+{
+if(m1 == NULL || m2 == NULL) return NULL;
+if(rows_matrix(m1) != columns_matrix(m1) || rows_matrix(m2) != columns_matrix(m2)) return NULL;
+if(rows_matrix(m1) != rows_matrix(m2)) return NULL;
+if(abs(det_matrix(m2)) < THRESHOLD) return NULL; /* det m2 is too close to zero */
+return mul_matrix(m1, inverse_matrix(m2));
 }
 
 

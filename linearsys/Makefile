@@ -13,7 +13,7 @@ VPATH := src
 CC := gcc
 FLAGS := -I include
 SLIB := linearsys.dll
-OBJ := linearsys.o lu.o matrix.o vector.o numio.o qr.o eigen.o svd.o
+OBJ := linearsys.o lu.o matrix.o vector.o numio.o qr.o eigen.o svd.o diagonalization.o 
 $(SLIB): $(OBJ)
 	$(CC) $^ -shared -lm -O2 -s -DNDEBUG -o $@ && $(cleanup)	
 linearsys.o: linearsys.c linearsys.h lu.h matrix.h vector.h
@@ -32,4 +32,5 @@ eigen.o: eigen.c eigen.h
 	$(CC) $(FLAGS) -c $<
 svd.o: svd.c svd.h
 	$(CC) $(FLAGS) -c $<
-
+diagonalization.o: diagonalization.c diagonalization.h eigen.h
+	$(CC) $(FLAGS) -c $<

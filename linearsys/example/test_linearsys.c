@@ -22,11 +22,13 @@
 #include "linearsys.h"
 #include "eigen.h"
 #include "svd.h"
+#include "diagonalization.h"
 
 #define PI 3.14159265359
 
 int main()
 {
+	Diagonalization* diag = NULL;
 	SVD* svd = NULL;
 EigenSystem* eigsys = NULL;
 Eigen* maxeigen = NULL;
@@ -287,6 +289,22 @@ print_matrix(m);
 printf("\n");
 printf("det(A) = %.2lf\n", determinant(m));
 printf("\n");
+printf("Diagonalization\n");
+printf("A:\n");
+m = load_matrix("md.dat");
+print_matrix(m);
+printf("\n");
+diag = diagonalize_matrix(m);
+printf("Compute the determinant of A from the diagonalization:\n");
+printf("det(A) = %.4lf\n", det_diagonalized_matrix(diag));
+printf("\n");
+print_diagonalization(diag);
+printf("P^-1AP = D\n");
+print_matrix(mul_matrix(mul_matrix(diagonalization_pt(diag), m), diagonalization_p(diag)));
+printf("\n");
+printf("thus: A = PDP^-1\n");
+print_matrix(mul_matrix(mul_matrix(diagonalization_p(diag), diagonalization_d(diag)), diagonalization_pt(diag)));
+printf("\n\n");
 
 destroy_eigen(maxeigen);
 destroy_eigensystem(eigsys);
@@ -294,6 +312,7 @@ destroy_matrix(m);
 destroy_qr(qr);
 destroy_svd(svd);
 destroy_matrix(pM);
+destroy_diagonalization(diag);
 
 	printf("bye.\n");
 

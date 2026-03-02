@@ -498,7 +498,7 @@ double determinant(const Matrix* m);
 * returns: 1 if the matrix passed as parameter is symmetrical or 0 otherwise.
 *
 */
-int is_symmetrical(const Matrix* m);
+int is_symmetric(const Matrix* m);
 
 /*
 * Computes the rank of the matrix passed as parameter.
@@ -519,6 +519,47 @@ int rank_matrix(const Matrix* m);
 *
 */
 int fully_rank_matrix(const Matrix* m);
+
+/*
+* Gets a row matrix from the vector passed as parameter.
+* param v
+* A vector type instance.
+*
+* returns: A row matrix builded from v.
+*
+*/
+Matrix* to_row_matrix(const Vector* v);
+
+/*
+* Gets a column matrix from the vector passed as parameter.
+* param: v
+* A vector type instance.
+*
+* returns: A column matrix builded from v.
+*
+*/
+Matrix* to_column_matrix(const Vector* v);
+
+/*
+* Raises the square matrix passed as first parameter to the integer power passed as second parameter.
+* param: m A square matrix.
+* param: k An integer power to raise.
+* The power acan be negative, positive or zero.
+* returns: m raised to k power.
+*
+*/
+Matrix* pow_matrix(const Matrix* m, int k);
+
+/*
+* This function performs matrix division only for some square matrices A and B.
+* The B matrix also must have an inverse.
+* param: m1 A square matrix.
+* param m2 A square matrix having an inverse.
+*
+* returns: A / B or NULL if the operation cannot be done.
+*
+*/
+Matrix* div_matrix(const Matrix* m1, const Matrix* m2);
 
 
 /*
